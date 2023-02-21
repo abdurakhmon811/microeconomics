@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<section class="page-section">
+    <div class="header">
+        <h1 class="info-text fw-light">{{ post.title }}</h1>
+    </div>
+    <div class="blog-body">
+        <h3 class="info-text fw-bold text-center mb-3">
+            {{ post.subtitle }}
+        </h3>
+        <p>
+            {{ post.body }}
+        </p>
+        <h5 class="info-text fw-bold mt-3 mb-3">
+            Xulosa
+        </h5>
+        <p>
+            {{ post.conclusion }}
+        </p>
+        {% if post.sources %}
+            <h5 class="info-text fw-bold mt-3 mb-3">
+                Foydalanilgan axborot vositalari
+            </h5>
+            <p>
+                {{ post.sources }}
+            </p>
+        {% endif %}
+        <br>
+        <p class="info-text fw-bold text-end">
+            {{ post.publisher }} - tomonidan yozildi,
+        </p>
+        <p class="info-text fw-bold text-end">
+            {{ post.published }}
+        </p>
+    </div>
+</section>
+{% endblock content %}

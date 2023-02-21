@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<section class="page-section">
+    <div class="header">
+        <h1 class="info-text fw-light">
+            Qidiruv natijalari
+        </h1>
+    </div>
+    <div class="search-body">
+        {% if not not_found %}
+            <div>
+                <h3 class="info-text fw-bold">
+                    Fayllardan topilgan natijalar
+                </h3>
+                {% for file in files %}
+                    <a href="{{ file.link }}" class="source-link fw-light">
+                        <cite>
+                            <strong>Fayllar</strong>&gt;<strong>{{ file.name }}</strong>&gt;
+                            <strong>{{ file.description|truncate:30 }}</strong>&gt;<strong>{{ file.link|truncate:10 }}</strong>
+                        </cite>
+                    </a><br>
+                {% empty %}
+                    <h4 class="info-text fw-light mt-4 mb-4">{{ searched }} so'rovi bo'yicha ma'lumot topilmadi...</h4>
+                {% endfor %}
+            </div>
+            <div class="mt-5">
+                <h3 class="info-text fw-bold">
+                    Maqolalardan topilgan natijalar
+                </h3>
+                {% for post in posts %}
+                    <a href="{% url 'blog' post.title %}" class="source-link fw-light">
+                        <cite>
+                            <strong>Maqolalar</strong>&gt;<strong>{{ post.title|truncate:20 }}</strong>
+                        </cite>
+                    </a><br>
+                {% empty %}
+                    <h4 class="info-text fw-light mt-4 mb-4">{{ searched }} so'rovi bo'yicha ma'lumot topilmadi...</h4>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h2 class="info-text fw-light text-center mt-4 mb-4">{{ searched }} so'rovi bo'yicha ma'lumot topilmadi...</h4>
+        {% endif %}
+    </div>
+</section>
+{% endblock content %}

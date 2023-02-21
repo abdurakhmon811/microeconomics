@@ -9,7 +9,6 @@ class About(models.Model):
 
     date_time = models.DateTimeField(auto_now_add=True)
     description = models.TextField()
-    about_author = models.TextField()
 
     objects = models.Manager()
 
@@ -26,13 +25,10 @@ class Blog(models.Model):
     publisher = models.ForeignKey(User, on_delete=models.PROTECT)
     title = models.CharField(max_length=100, unique=True)
     subtitle = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images')
     body = models.TextField()
     conclusion = models.TextField()
-    sources = models.TextField()
+    sources = models.TextField(null=True)
     published = models.DateTimeField(auto_now_add=True)
-    likes = models.PositiveIntegerField()
-    dislikes = models.PositiveIntegerField()
 
     objects = models.Manager()
 
@@ -46,7 +42,7 @@ class File(models.Model):
     A model for handling files.
     """
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     link = models.URLField()
     published = models.DateTimeField(auto_now_add=True)

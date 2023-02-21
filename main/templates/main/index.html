@@ -1,0 +1,62 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-section">
+    <div class="info-div text-center mt-4 mb-4">
+        <p class="display-5 fw-bold" id="welcome-txt">
+            Qarshi Muhandislik-Iqtisodiyot Instituti, Iqtisodiyot fakultetining Mikro va Makroiqtisodiyot fani rasmiy
+            veb-saytiga xush kelibsiz!
+        </p>
+    </div>
+    <div class="row info-row mt-4 mb-4">
+        <div class="col-md">
+            <h1 class="info-text fw-light">
+                <cite>Mikroiqtisodiyot o'zi nima?</cite>
+            </h1><br>
+            <p class="fw-light">
+                Mikroiqtisodiyot (grekcha: μικρός — „kichik“) — iqtisodiy nazariyaning ayrim bir xo'jalik yurituvchi 
+                sub'yektlar o'rtasidagi iqtisodiy munosabatlarni, ularning faoliyati va milliy iqtisodiyotga ta'sirini 
+                o'rganadigan bo'limi; mikroiqtisodiyot o'rganadigan asosiy ob'yektlar — uy xo'jaligi va nisbatan katta 
+                bo'lmagan korxonalardir.<br>
+                <br>
+                <cite>
+                    Manbaa: <a href="https://uz.wikipedia.org/wiki/Mikroiqtisodiyot" class="source-link">uz.wikipedia.org</a>
+                </cite>
+            </p>
+        </div>
+        <div class="col-md info-col">
+            <img src="{% static 'images/microeconomics.jpg' %}" class="index-img">
+        </div>
+    </div>
+    <div class="row mt-4 mb-4">
+        <div class="col-md info-col">
+            <img src="{% static 'images/macroeconomics.jpg' %}" class="index-img">
+        </div>
+        <div class="col-md">
+            <h1 class="info-text fw-light">
+                <cite>Makroiqtisodiyotchi?</cite>
+            </h1><br>
+            <p class="fw-light">
+                Makroiqtisodiyot — mamlakat (yoki uning bir qismi, tarmoqlar) iqtisodiyotini, inflatsiya, ishsizlik, 
+                byudjet taqchilligi (defisiti), iqtisodiy o'sish, iqtisodiyotning davlat tomonidan boshqarilishi 
+                va umumiy jarayonlarni o'rganuvchi fan. Makroiqtisodiyot YaIM, YaMM, yalpi talab, yalpi taklif, 
+                to'lov balansi, pul bozori, tovar bozori va mehnat bozori kabi tushunchalar bilan ishlaydi.<br>
+                <br>
+                <cite>
+                    Manbaa: <a href="https://uz.wikipedia.org/wiki/Makroiqtisodiyot" class="source-link">uz.wikipedia.org</a>
+                </cite>
+            </p>
+        </div>
+    </div>
+    <div class="info-div mt-5 mb-4">
+        <h3 class="info-text fw-light">
+            {% if main_info %}
+                <cite>{{ main_info }}</cite>
+            {% else %}
+                <cite>{% lorem %}</cite>
+            {% endif %}
+        </h3>
+    </div>
+</section>
+{% endblock content %}

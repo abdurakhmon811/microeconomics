@@ -1,0 +1,135 @@
+{% load static %}
+{% load bootstrap5 %}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}QMII Mikroiqtisodiyot{% endblock title %}</title>
+    <link rel="shortcut icon" href="{% static 'icons/favicon.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script language="JavaScript" type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script language="JavaScript" type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+</head>
+<body id="main_body">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% include 'includes/loader.html' %}
+    <nav class="navbar navbar-mobile bg-body-tertiary fixed-top" id="navbar_mobile">
+        <div class="container-fluid">
+            <button class="hamburger-btn"
+            type="button" 
+            data-bs-toggle="offcanvas" 
+            data-bs-target="#main_offcanvas"
+            aria-controls="offcanvasNavbar">
+                <img src="{% static 'icons/hamburger.png' %}" class="hamburger">
+            </button>
+            <a href="/">
+                <img src="{% static 'images/qmiilogo.png' %}" id="qmiilogo">
+            </a>
+            <div class="offcanvas offcanvas-start offcanvas-customized" 
+            tabindex="-1" 
+            id="main_offcanvas" 
+            aria-labelledby="offcanvasNavbarLabel"
+            style="max-width: 300px;">
+                <div class="offcanvas-header-customized">
+                    <a href="/"><img src="{% static 'images/qmiilogo.png' %}" class="brand-img"></a>
+                    <button type="button" 
+                    class="btn-close btn-close-white" 
+                    aria-label="Close" 
+                    data-bs-dismiss="offcanvas"
+                    id="offcanvas-closer">
+                    </button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="central-part">
+                        <div class="link-box">
+                            <a href="/" class="btn-navbar">Asosiy sahifa</a>
+                            <a href="{% url 'files' %}" class="btn-navbar">Fayllar</a>
+                            <a href="{% url 'blogs' %}" class="btn-navbar">Maqolalar</a>
+                        </div>
+                    </div>
+                    <div class="navbar-footer">
+                        <a type="button" 
+                        class="btn-navbar" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#search-modal"
+                        style="margin-left: 2.5rem; margin-right: 2.5rem;">
+                            <img src="{% static 'icons/search_white.png' %}" height="25">
+                        </a>
+                        <p class="mt-2">&copy QMII Mikroiqtisodiyot - {% now 'Y' %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-cust" id="main_navbar">
+        <div class="nav-brand">
+            <a href="/"><img src="{% static 'images/qmiilogo.png' %}" class="brand-img"></a>
+        </div>
+        <div class="central-part">
+            <div class="link-box">
+                <a href="/" class="btn-navbar">Asosiy sahifa</a>
+                <a href="{% url 'files' %}" class="btn-navbar">Fayllar</a>
+                <a href="{% url 'blogs' %}" class="btn-navbar">Maqolalar</a>
+            </div>
+        </div>
+        <div class="navbar-footer">
+            <a type="button" 
+            class="btn-navbar" 
+            data-bs-toggle="modal" 
+            data-bs-target="#search-modal"
+            style="margin-left: 2.5rem; margin-right: 2.5rem;">
+                <img src="{% static 'icons/search_white.png' %}" height="25">
+            </a>
+            <p class="mt-2">&copy QMII Mikroiqtisodiyot - {% now 'Y' %}</p>
+        </div>
+    </nav>
+    <div class="backdrop hide-backdrop" id="backdrop" onclick="ToggleNavbar(document.querySelector('#main_navbar'),
+                                                                            document.querySelector('#backdrop'))">
+    </div>
+    <div class="modal fade" tabindex="-1" id="search-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form class="search-form" action="{% url 'search' %}" novalidate method="get" role="search">
+                        <input class="search-input" 
+                        name="searched" 
+                        type="search" 
+                        id="search-input" 
+                        placeholder="Qidirish">
+                        <button type="submit" class="btn-navbar-reverse" id="search-btn">
+                            <img src="{% static 'icons/search_white.png' %}" height="25">
+                        </button>
+                        <button type="button" 
+                        class="btn-close" 
+                        aria-label="Close" 
+                        data-bs-dismiss="modal" 
+                        id="close-btn">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock content %}
+    <script>
+        $(document).ready(function (e) {
+            $('.loader').hide();
+            let navbar = document.querySelector('#navbar_mobile');
+            if (window.innerWidth < 900) {
+                navbar.style.display = 'block';
+            }
+        });
+
+        $(window).resize(function (e) {
+            let navbar = document.querySelector('#navbar_mobile');
+            if (window.innerWidth < 900) {
+                navbar.style.display = 'block';
+            } else {
+                navbar.style.display = 'none';
+            }
+        });
+    </script>
+</body>

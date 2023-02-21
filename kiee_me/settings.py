@@ -71,6 +71,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'builtins': [
+                'main.filters'
+            ]
         },
     },
 ]
@@ -120,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'uz'
 
-TIME_ZONE = 'GMT +5'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 

@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<section class="page-section">
+    <div class="login-form-container">
+        {% if not user.is_authenticated %}
+            <form class="login-form" action="{% url 'ramazonov_shamil_login' %}" novalidate method="post">
+                {% csrf_token %}
+                <input class="login-input"
+                type="text"
+                name="username"
+                placeholder="Foydalanuvchi nomi*"
+                maxlength="50">
+                <input class="login-input mt-4"
+                type="password"
+                name="password"
+                placeholder="Parol*">
+                <button type="submit"
+                class="btn-navbar-reverse info-text mt-4">
+                    Kirish
+                </button>
+            </form>
+        {% else %}
+            <div class="text-center pt-4 pb-4">
+                <h1 class="info-text fw-light">Siz allaqachon kabinetingizga kirgansiz...</h1>
+                <a href="{% url 'logout_superuser' %}" class="source-link mt-4"><cite>Chiqish</cite> &raquo;</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock content %}

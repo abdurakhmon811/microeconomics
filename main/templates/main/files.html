@@ -1,0 +1,163 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-section">
+    <div class="header">
+        <h1 class="info-text fw-light">Fayllar bo'limi</h1>
+    </div>
+    <div class="row files-row" id="files-row">
+        {% for doc in docs %}
+            <div class="col-sm file-col" id="file-col">
+                <div class="card file-card" style="border-color: #5f00ad; border-radius: 1.1rem;">
+                    <div class="card-body file-card-body">
+                        <h5 class="card-title text-light">{{ doc.name|truncate:20 }}</h5>
+                        <p class="card-text fw-light text-light">{{ doc.description|truncate:50 }}</p>
+                        <a href="{{ doc.link }}" class="download-anchor">Yuklash</a>
+                        {% if user.is_superuser %}
+                            <a type="button" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#modal-{{ doc.id }}" 
+                            id="delete-btn">O'chirish</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" tabindex="-1" id="modal-{{ doc.id }}">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header delete-modal-header-theme"> 
+                            <button type="button" 
+                            class="btn-close" 
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            id="modal-dismiss-btn">
+                            </button>
+                        </div>
+                        <div class="modal-body delete-modal-body-theme">
+                            <h3 class="text-light fw-light">
+                                Ma'lumotlarni o'chirishga ishonchingiz komilmi?
+                            </h3>
+                        </div>
+                        <div class="modal-footer delete-modal-footer-theme">
+                            <button type="button"
+                            class="btn-navbar-reverse"
+                            data-bs-dismiss="modal"
+                            id="modal-closer">
+                                Yo'q
+                            </button>
+                            <a href="{% url 'delete_file' doc.name %}" 
+                            type="button"
+                            class="btn-navbar-reverse"
+                            id="file-delete-btn">
+                                Shubhasiz
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <h1 class="info-text text-center fw-light mt-5 mb-5">Fayllar hali yuklanmagan...</h1>
+        {% endfor %}
+        {% if user.is_superuser %}
+            <div class="col-sm file-col">
+                <div class="card file-card" style="border-color: #5f00ad; border-radius: 1.1rem; width: 250px;">
+                    <div class="card-body form-card-body">
+                        <form action="{% url 'add_file' %}" novalidate method="post" id="file-form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-10" style="position: relative;">
+                                    <div class="file-input-div">
+                                        <input class="file-info-input"
+                                        name="name"
+                                        type="text"
+                                        placeholder="Fayl nomi*"
+                                        maxlength="100"
+                                        id="file-name">
+                                        <img src="{% static 'icons/empty-error.png' %}" 
+                                        class="file-error-icon"
+                                        id="first-icon"> 
+                                    </div>
+                                    <div class="file-input-div">
+                                        <input class="file-info-input"
+                                        name="description"
+                                        type="text"
+                                        placeholder="Fayl tavsifi*"
+                                        maxlength="200"
+                                        id="file-description">
+                                        <img src="{% static 'icons/empty-error.png' %}"
+                                        class="file-error-icon"
+                                        id="second-icon">
+                                    </div> 
+                                    <div class="file-input-div">
+                                        <input class="file-info-input"
+                                        name="link"
+                                        type="url"
+                                        placeholder="Fayl uchun havola*"
+                                        id="file-link">
+                                        <img src="{% static 'icons/empty-error.png' %}"
+                                        class="file-error-icon"
+                                        id="third-icon">
+                                    </div>
+                                </div>
+                                <div class="col-md-2" id="add-btn-col">
+                                    <button type="submit" id="add-btn">
+                                        <img src="{% static 'icons/add.png' %}" height="25">
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+<script>
+    $('#file-form').on('submit', event => {
+        var file_name = document.getElementById('file-name');
+        var file_description = document.getElementById('file-description');
+        var file_link = document.getElementById('file-link');
+        var first_error_icon = document.getElementById('first-icon');
+        var second_error_icon = document.getElementById('second-icon');
+        var third_error_icon = document.getElementById('third-icon');
+
+        results = [
+            ValidateFormElements(file_name, first_error_icon),
+            ValidateFormElements(file_description, second_error_icon),
+            ValidateFormElements(file_link, third_error_icon, is_url=true)
+        ]
+
+        test = obj => (obj === true);
+        if (results.every(test) === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        }
+    });
+
+    function ValidateFormElements(element, error_icon, is_url=false) {
+        if (is_url === false) {
+            if ($(element).val() === '' || $(element).val() === null || $(element).val() === undefined) {
+                $(element).addClass('file-info-input-error');
+                $(error_icon).css('display', 'flex');
+                return false;
+            } else {
+                $(element).removeClass('file-info-input-error');
+                $(error_icon).css('display', 'none');
+                return true;
+            };
+        } else {
+            if ($(element).val().startsWith('https://') === true || $(element).val().startsWith('http://') === true) {
+                $(element).removeClass('file-info-input-error');
+                $(error_icon).css('display', 'none');
+                return true;
+            }else {
+                $(element).addClass('file-info-input-error');
+                $(error_icon).css('display', 'flex');
+                return false;
+            };
+        };
+    };
+</script>
+{% endblock content %}
