@@ -3,6 +3,7 @@ In order not to load up much onto function views, refactoring is important
 so create your assistant classes or functions here.
 """
 from django.http import Http404, HttpRequest
+from random import choice, shuffle
 
 
 class Police:
@@ -25,3 +26,18 @@ class Police:
             pass
         else:
             raise Http404
+
+
+def code_generator(length: int) -> str:
+    """
+    Generates a code with random digits and letters in provided length.
+    """
+
+    characters = '1234567890abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+    output = []
+    while len(output) < length:
+        character = choice(characters)
+        output.append(character)
+    
+    return ''.join(output)

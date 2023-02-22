@@ -52,11 +52,60 @@
     <div class="info-div mt-5 mb-4">
         <h3 class="info-text fw-light">
             {% if main_info %}
-                <cite>{{ main_info }}</cite>
+                <cite>{{ main_info.description }}</cite>
             {% else %}
                 <cite>{% lorem %}</cite>
             {% endif %}
         </h3>
     </div>
+    {% if user.is_superuser %}
+            <div class="card" id="blog-form-card">
+                <div class="card-body blog-form-card">
+                    <form action="{% url 'add_index_description' %}" novalidate method="post" id="description-form">
+                        {% csrf_token %}
+                        <div class="blog-input-div">
+                            <label class="body-label mt-3 ms-3 mb-1" for="#blog-body">
+                                Asosiy sahifa uchun ma'lumot <img src="{% static 'icons/empty-error.png' %}" 
+                                                class="body-error-icon ms-1"
+                                                id="description-error-icon">
+                            </label>
+                            <textarea class="blog-body-input"
+                            name="description"
+                            placeholder="Jumla..."
+                            rows="5"
+                            id="description"></textarea>
+                        </div>
+                        <button type="submit"
+                        class="btn-navbar info-text mt-2">
+                            Kiritish
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
 </section>
+<script>
+    $('#description-form').on('submit', event => {
+        var description = document.getElementById('description');
+        const error_icon = document.getElementById('description-error-icon');
+
+        if (ValidateFormElements(description, error_icon) === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        }
+    });
+
+    function ValidateFormElements(element, error_icon, is_url=false) {
+        if (element.value === '' || element.value  === null || element.value === undefined) {
+            $(element).css('border-color', 'red');
+            $(error_icon).css('display', 'flex');
+            return false;
+        } else {
+            $(element).css('border-color', '');
+            $(error_icon).css('display', 'none');
+            return true;
+        };
+    };
+</script>
 {% endblock content %}

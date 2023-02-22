@@ -27,6 +27,20 @@ def index(request: HttpRequest):
     return render(request, 'main/index.html', context)
 
 
+def add_index_description(request: HttpRequest):
+    """
+    Adds the description inforamtion for the main page.
+    """
+
+    police = Police()
+    police.check_superuser(request)
+    if request.method == 'POST':
+        description = request.POST.get('description')
+        new_description = About.objects.create(description=description)
+        new_description.save()
+        return redirect('index')
+
+
 def blogs(request: HttpRequest):
     """
     Renders the blogs page.
